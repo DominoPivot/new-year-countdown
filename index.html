@@ -1,0 +1,31 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>New Year Countdown</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Mono">
+<output style="font-family: 'Noto Sans Mono';" id="countdown-output"></output>
+<script type="module">
+const outputElement = document.querySelector("#countdown-output");
+const nextYear = new Date(new Date().getFullYear() + 1, 0, 1).getTime();
+
+function update () {
+    const timestamp = Date.now();
+    const floored = 1000 * Math.floor(timestamp / 1000);
+    const nextSecondOffset = floored - timestamp + 1000;
+    const countdown = Math.max(0, nextYear - floored);
+    const hh = Math.floor(countdown / 3600000).toFixed();
+    const mm = Math.floor((countdown % 3600000) / 60000).toFixed().padStart(2, "0");
+    const ss = Math.floor((countdown % 60000) / 1000).toFixed().padStart(2, "0");
+    const displayString = `${hh}:${mm}:${ss}`;
+    outputElement.textContent = displayString;
+    console.log(displayString);
+    
+    if (countdown > 0) {
+        setTimeout(request, nextSecondOffset);
+    }
+}
+function request() {
+    requestAnimationFrame(update);
+}
+
+update();
+</script>
